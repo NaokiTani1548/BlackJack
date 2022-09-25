@@ -7,12 +7,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
 class GameActivity : AppCompatActivity(), View.OnClickListener  {
-    var balance : Int = 2000
-    var bet : Int = 0
-    var enemy1 :Int = 0
-    var enemy2 :Int = 0
-    var my1 :Int = 0
-    var my2 :Int = 0
+    private var balance : Int = 2000
+    private var bet : Int = 0
+    private var enemy1 :Int = 0
+    private var enemy2 :Int = 0
+    private var my1 :Int = 0
+    private var my2 :Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +30,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener  {
         my1 = range.random()
         my2 = range.random()
         updateText(R.id.textViewEnemy1, getCardName(enemy1))
-        updateText(R.id.textViewEnemy2, getCardName(enemy2))
+        updateText(R.id.textViewEnemy2, "❓❓")
         updateText(R.id.textViewMy1, getCardName(my1))
         updateText(R.id.textViewMy2, getCardName(my2))
 
@@ -63,6 +63,27 @@ class GameActivity : AppCompatActivity(), View.OnClickListener  {
     }
 
     private fun onClickButtonOpen() {
+        updateText(R.id.textViewEnemy2, getCardName(enemy2))
+        var enemyTotal :Int = 21 - (enemy1 % 13 + enemy2 % 13)
+        var myTotal :Int = 21 - (my1 % 13 + my2 % 13)
+        if (enemyTotal < 0) {
+            enemyTotal = 21
+        }
+        if (myTotal < 0) {
+            myTotal = 21
+        }
+        if (myTotal > enemyTotal) {
+            updateText(R.id.textViewResult, "Lose")
+            balance -= bet
+            updateText(R.id.textViewBalance, balance.toString())
+        } else if (myTotal < enemyTotal) {
+            updateText(R.id.textViewResult, "Win")
+            balance += bet
+            updateText(R.id.textViewBalance, balance.toString())
+        } else {
+            updateText(R.id.textViewResult, "draw")
+        }
+
 
     }
 
